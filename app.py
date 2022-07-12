@@ -11,7 +11,6 @@ app = Flask(__name__)
 client = MongoClient(
     'mongodb+srv://test:sparta@cluster0.rf8ug.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
-# db = client.dbsparta_plus_week1
 
 
 @app.route('/')
