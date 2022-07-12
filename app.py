@@ -9,9 +9,9 @@ app = Flask(__name__)
 
 # client = MongoClient('localhost', 27017)
 client = MongoClient(
-    'mongodb+srv://test:sparta@cluster0.rf8ug.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta
-# db = client.dbsparta_plus_week1
+    'mongodb+srv://byunjihye:asdf33@cluster0.qulah.mongodb.net/?retryWrites=true&w=majority')
+db = client.dbsparta2
+# 지혜님 몽고디비 연결해둠
 
 
 @app.route('/')
