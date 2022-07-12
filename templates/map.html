@@ -412,9 +412,23 @@
         let lng = marker.getPosition().getLng();
         let nameWithNoSpace = title.replaceAll(/\s/g, '')
 
-        if (confirm(`모각코 GOGO 추천 카페로 ${name} 등록하시겠습니까?`)) {
-            plusCafe(nameWithNoSpace, lat, lng);
-        }
+        $.ajax({
+            type: 'GET',
+            url: `/cafe/${nameWithNoSpace}`,
+            data: {},
+            success: function (response) {
+                data = response['data'];
+                if (data) {
+                    if (confirm('이미 등록된 카페입니다.\n해당 카페 상세페이지로 이동하겠습니까?')) {
+                        location.href = `/cafe/${data.name}`;
+                    }
+                } else {
+                    if (confirm(`모각코 GOGO 추천 카페로 ${title} 등록하시겠습니까?`)) {
+                        plusCafe(nameWithNoSpace, lat, lng);
+                    }
+                }크
+            },
+        })
     }
 </script>
 </body>
