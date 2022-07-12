@@ -18,16 +18,14 @@ db = client.dbsparta2
 def home():
     return render_template('index.html')
 
-
-@app.route('/listing_cafe', methods=['GET'])
-def show_cafe():
-    cafes = list(db.cafe_mogakco.find({}, {'_id': False}))
-    return jsonify({'all_cafe': cafes})
-
-
 @app.route('/map')
 def cafe():
     return render_template('map.html')
+
+@app.route('/cafe', methods=['GET'])
+def show_cafe():
+    data = list(db.cafe.find({}, {'_id': False, 'lat': False, 'lng': False}))
+    return jsonify({'data': data})
 
 @app.route("/cafe", methods=["POST"])
 def save_cafe():
