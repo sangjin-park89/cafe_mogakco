@@ -22,6 +22,11 @@ def home():
 def cafe():
     return render_template('map.html')
 
+@app.route('/cafe/<string:name>', methods=['GET'])
+def detail_cafe(name: str):
+    data = db.cafe.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
+    return jsonify({'data': data})
+
 @app.route('/cafe', methods=['GET'])
 def show_cafe():
     data = list(db.cafe.find({}, {'_id': False, 'lat': False, 'lng': False}))
@@ -51,4 +56,4 @@ def save_cafe():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5555, debug=True)
