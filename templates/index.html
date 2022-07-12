@@ -47,6 +47,10 @@
         margin: 50px auto;
         width: 90%;
       }
+
+      #cafe-image {
+        cursor: pointer;
+      }
     </style>
     <script>
       $(document).ready(function () {
@@ -68,9 +72,9 @@
               let rating = 4.7; // 지금은 하드코딩이지만 DB에서 하위층 별점 평균내오기
 
               let temp_html = `
-              <div class="col">
+              <div href="#" class="col">
                 <div class="card h-100">
-                  <img src="../static/sample.jpg" class="card-img-top" alt="..." />
+                  <img src="../static/sample.jpg" id="cafe-image" class="card-img-top" alt="..." />
                   <div class="card-body">
                     <h5 class="card-title">${cafe_name}</h5>
                     <span class="card-text"> ${'⭐'.repeat(rating.toFixed(0))} </span>

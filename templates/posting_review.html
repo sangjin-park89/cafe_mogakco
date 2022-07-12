@@ -64,22 +64,31 @@
         margin: 50px auto;
         padding: 100px;
       }
-      #cafe_address {
-        margin-bottom: 20px;
+      .card{
+        margin: 50px auto;
       }
     </style>
     <script>
       function posting() {
-        let cafe_name = $('#cafe_name').val();
-        let cafe_address = $('#cafe_address').val();
+        let cafe_name = '데이터에서 끌어와야됨';
+        let usability = $('#usability').val();
+        let sound_mood = $('#sound_mood').val();
+        let price = $('#price').val();
+        let comment = $('#comment').val();
 
         $.ajax({
           type: 'POST',
-          url: '/posting_cafe',
-          data: { cafe_name_give: cafe_name, cafe_address_give: cafe_address },
+          url: '/posting_review',
+          data: {
+            cafe_name_give: cafe_name,
+            usability_give: usability,
+            sound_mood_give: sound_mood,
+            price_give: price,
+            comment_give: comment,
+          },
           success: function (response) {
             alert(response['msg']);
-            window.location.replace('/');
+            window.location.reload();
           },
         });
       }
@@ -120,10 +129,6 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Sing In</a></li>
                 <li><a class="dropdown-item" href="#">Sing Up</a></li>
-                <!-- <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li> -->
               </ul>
             </li>
             <li class="nav-item">
@@ -148,38 +153,66 @@
 
   <body>
     <div class="wrap">
-      <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-          <h1>후기 전당의 콜롬버스가 되어주세요 🚢</h1>
-          <div class="posting-box">
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="cafe_name"
-                placeholder="카페명을 입력해주세요."
-              />
-              <label for="cafe_name">카페명</label>
-            </div>
-            <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                id="cafe_address"
-                placeholder="카페 주소를 입력해주세요."
-              />
-              <label for="cafe_address">카페 주소</label>
-            </div>
-            <div>
-              <button onclick="posting()" type="button" class="btn btn-primary">
-                등록
-              </button>
-              <span>등록되지 않은 카페만 입력 가능합니다 :)</span>
-            </div>
+      <div class="card" style="width: 18rem">
+        <img src="../static/sample.jpg" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">${cafe_name}</h5>
+          <p class="card-text">
+            ${cafe_address}
+          </p>
+          <div class="form-floating">
+            <select
+              class="form-select"
+              id="usability"
+              aria-label="Floating label select example"
+            >
+              <option value="1">⭐</option>
+              <option value="2">⭐⭐</option>
+              <option selected value="3">⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="5">⭐⭐⭐⭐⭐</option>
+            </select>
+            <label for="usability">편의성</label>
           </div>
+          <div class="form-floating">
+            <select
+              class="form-select"
+              id="sound_mood"
+              aria-label="Floating label select example"
+            >
+              <option value="1">⭐</option>
+              <option value="2">⭐⭐</option>
+              <option selected value="3">⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="5">⭐⭐⭐⭐⭐</option>
+            </select>
+            <label for="sound_mood">분위기</label>
+          </div>
+          <div class="form-floating">
+            <select
+              class="form-select"
+              id="price"
+              aria-label="Floating label select example"
+            >
+              <option value="1">⭐</option>
+              <option value="2">⭐⭐</option>
+              <option selected value="3">⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="5">⭐⭐⭐⭐⭐</option>
+            </select>
+            <label for="price">금액대</label>
+          </div>
+          <div class="form-floating">
+            <textarea
+              class="form-control"
+              placeholder="후기를 자유롭게 남겨주세요 :)"
+              id="comment"
+            ></textarea>
+            <label for="comment">Comments</label>
+          </div>
+          <button onclick="posting()" type="button" class="btn btn-primary">후기 등록</button>
         </div>
       </div>
-      <div class="card-columns" id="cards-box"></div>
     </div>
   </body>
 </html>

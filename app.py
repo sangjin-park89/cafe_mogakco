@@ -39,9 +39,39 @@ def save_cafe():
     doc = {
         'cafe_name': cafe_name_receive,
         'cafe_address': cafe_address_receive,
-        'date': created_date
+        'date': created_date,
+        'childs': [
+
+        ]
     }
     db.cafe_mogakco.insert_one(doc)
+    return jsonify({'msg': '저장 완료!'})
+
+
+@app.route('/posting_review')
+def review():
+    return render_template('posting_review.html')
+
+
+@app.route('/posting_review', methods=['POST'])
+def write_review():
+    cafe_name_receive = request.form['cafe_name_give']
+    usability_receive = request.form['usability_give']
+    sound_mood_receive = request.form['sound_mood_give']
+    price_receive = request.form['price_give']
+    comment_receive = request.form['comment_give']
+    today = datetime.now()
+    created_date = today.strftime('%Y-%m-%d')
+
+    doc = {
+        'cafe_name': cafe_name_receive, # 이거 어카냐..
+        'usability': int(usability_receive),
+        'sound_mood': int(sound_mood_receive),
+        'price': int(price_receive),
+        'comment': comment_receive,
+        'date': created_date
+    }
+    db.cafe_mogakco_reivew.insert_one(doc)
     return jsonify({'msg': '저장 완료!'})
 
 
