@@ -64,11 +64,52 @@
         margin: 50px auto;
         padding: 100px;
       }
-      .card{
+      .card {
         margin: 50px auto;
       }
     </style>
     <script>
+      // $(document).ready(function () {
+      //   listing();
+      // });
+      function listing() {
+        $.ajax({
+          type: 'GET',
+          url: '/comments',
+          data: {},
+          success: function (response) {
+            // alert(response['msg']);
+            let rows = response['comments'];
+            for (let i = 0; i < rows.length; i++) {
+              let user_id = rows[i]['user_id'];
+              let usability = rows[i]['usability'];
+              let sound_mood = rows[i]['sound_mood'];
+              let price = rows[i]['price'];
+              let comment = rows[i]['comment'];
+
+              let temp_html = `
+              <div class="card" style="width: 18rem">
+                <div class="card-body">
+                  <h5 class="card-title">${user_id}</h5>
+                  <p class="card-text">
+                    편의성 ${usability}
+                  </p>
+                  <p class="card-text">
+                    분위기 ${sound_mood}
+                  </p>
+                  <p class="card-text">
+                    금액대 ${price}
+                  </p>
+                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                </div>
+              </div>
+              `;
+              $('#comments-box').append(temp_html);
+            }
+          },
+        });
+      }
+
       function posting() {
         let cafe_name = '데이터에서 끌어와야됨';
         let usability = $('#usability').val();
@@ -78,7 +119,7 @@
 
         $.ajax({
           type: 'POST',
-          url: '/posting_review',
+          url: '/comments',
           data: {
             cafe_name_give: cafe_name,
             usability_give: usability,
@@ -113,7 +154,7 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/posting_cafe">Cafe +</a>
+              <a class="nav-link" href="/boards">Cafe +</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -157,9 +198,7 @@
         <img src="../static/sample.jpg" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">${cafe_name}</h5>
-          <p class="card-text">
-            ${cafe_address}
-          </p>
+          <p class="card-text">${cafe_address}</p>
           <div class="form-floating">
             <select
               class="form-select"
@@ -210,7 +249,21 @@
             ></textarea>
             <label for="comment">Comments</label>
           </div>
-          <button onclick="posting()" type="button" class="btn btn-primary">후기 등록</button>
+          <button onclick="posting()" type="button" class="btn btn-primary">
+            후기 등록
+          </button>
+        </div>
+      </div>
+      <!-- 후기 -->
+      <div id="comments-box">
+        <div class="card" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">${user_id}</h5>
+            <p class="card-text">편의성 ${}</p>
+            <p class="card-text">분위기 ${}</p>
+            <p class="card-text">금액대 ${}</p>
+            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          </div>
         </div>
       </div>
     </div>

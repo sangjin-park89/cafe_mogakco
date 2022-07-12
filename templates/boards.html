@@ -75,7 +75,7 @@
 
         $.ajax({
           type: 'POST',
-          url: '/posting_cafe',
+          url: '/boards',
           data: { cafe_name_give: cafe_name, cafe_address_give: cafe_address },
           success: function (response) {
             alert(response['msg']);
@@ -104,7 +104,7 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/posting_cafe">Cafe +</a>
+              <a class="nav-link" href="/boards">Cafe +</a>
             </li>
             <li class="nav-item dropdown">
               <a

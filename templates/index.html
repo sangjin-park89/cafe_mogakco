@@ -60,7 +60,7 @@
       function listing() {
         $.ajax({
           type: 'GET',
-          url: '/listing_cafe',
+          url: '/boards/list',
           data: {},
           success: function (response) {
             let cafes = response['all_cafe'];
@@ -72,12 +72,14 @@
               let rating = 4.7; // 지금은 하드코딩이지만 DB에서 하위층 별점 평균내오기
 
               let temp_html = `
-              <div href="#" class="col">
+              <div href="/comments/${cafe_name}" class="col">
                 <div class="card h-100">
                   <img src="../static/sample.jpg" id="cafe-image" class="card-img-top" alt="..." />
                   <div class="card-body">
                     <h5 class="card-title">${cafe_name}</h5>
-                    <span class="card-text"> ${'⭐'.repeat(rating.toFixed(0))} </span>
+                    <span class="card-text"> ${'⭐'.repeat(
+                      rating.toFixed(0)
+                    )} </span>
                     <span>${rating}</span>
                     <p class="card-text">${cafe_address}</p>
                   </div>
@@ -115,7 +117,7 @@
               <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/posting_cafe">Cafe +</a>
+              <a class="nav-link" href="/boards">Cafe +</a>
             </li>
             <li class="nav-item dropdown">
               <a
