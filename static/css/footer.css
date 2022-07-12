@@ -1,6 +1,8 @@
 .footer {
-    margin-top:100px;
-    width:100%;
+    height: 100px;
+    width: 100%;
+    position : fixed;
+    bottom: 0;
 }
 .foo p {
     font-size:15px;
