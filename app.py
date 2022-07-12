@@ -25,25 +25,31 @@ def show_cafe():
     return jsonify({'all_cafe': cafes})
 
 
-@app.route('/posting_cafe')
+@app.route('/map')
 def cafe():
-    return render_template('posting_cafe.html')
+    return render_template('map.html')
 
-
-@app.route('/posting_cafe', methods=['POST'])
+@app.route("/cafe", methods=["POST"])
 def save_cafe():
-    cafe_name_receive = request.form['cafe_name_give']
-    cafe_address_receive = request.form['cafe_address_give']
-    today = datetime.now()
-    created_date = today.strftime('%Y-%m-%d')
+    name = request.form['name']
+    address = request.form['address']
+    lat = request.form['lat']
+    lng = request.form['lng']
+    rating = request.form['rating']
+    createdAt = datetime.now().strftime('%Y-%m-%d')
 
     doc = {
-        'cafe_name': cafe_name_receive,
-        'cafe_address': cafe_address_receive,
-        'date': created_date
+        'name': name,
+        'address': address,
+        'lat': lat,
+        'lng': lng,
+        'rating': rating,
+        'createdAt': createdAt
     }
-    db.cafe_mogakco.insert_one(doc)
-    return jsonify({'msg': '저장 완료!'})
+
+    db.cafe.insert_one(doc)
+
+    return jsonify({'msg': '모각코GOGO 추천 카페로 등록되었습니다.'})
 
 
 if __name__ == '__main__':
