@@ -7,7 +7,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# client = MongoClient('localhost', 27017)
+
 client = MongoClient(
     'mongodb+srv://test:sparta@cluster0.rf8ug.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta
