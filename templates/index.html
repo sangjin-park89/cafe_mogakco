@@ -62,6 +62,17 @@
       .image > img {
         width: 400px;
       }
+      * {
+        /* font-family: 'Gowun Dodum', sans-serif; */
+        /* font-family: 'Hahmlet', serif; */
+        font-family: 'IBM Plex Sans KR', sans-serif;
+        /* font-family: 'Nanum Gothic', sans-serif; */
+        /* font-family: 'Nanum Myeongjo', serif; */
+      }
+      .wrap {
+        width: 900px;
+        margin: 50px auto;
+      }
     </style>
     <script>
       $(document).ready(function () {
@@ -71,50 +82,45 @@
       function listing() {
         $.ajax({
           type: 'GET',
-          url: '/boards/list',
+          url: '/cafe',
           data: {},
           success: function (response) {
-            let cafes = response['all_cafe'];
-            console.log(cafes);
+            let data = response['data'];
+            console.log(data);
 
-            for (let i = 0; i < cafes.length; i++) {
-              let cafe_name = cafes[i]['cafe_name'];
-              let cafe_address = cafes[i]['cafe_address'];
-              let rating = 4.7; // 지금은 하드코딩이지만 DB에서 하위층 별점 평균내오기
+            for (let i = 0; i < data.length; i++) {
+              let name = data[i]['name'];
+              let address = data[i]['address'];
+              let rating = data[i]['rating']; // 지금은 하드코딩이지만 DB에서 하위층 별점 평균내오기
 
               let temp_html = `
-              <div href="/comments/${cafe_name}" class="col">
-                <div class="card h-100">
-                  <img src="../static/sample.jpg" id="cafe-image" class="card-img-top" alt="..." />
-                  <div class="card-body">
-                    <h5 class="card-title">${cafe_name}</h5>
-                    <span class="card-text"> ${'⭐'.repeat(
+              <div class="card" style="width: 30rem;">
+                <div class="card-body">
+                  <h5 class="card-title">${name}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">${address}</h6>
+                  <span class="card-text">${rating}</span>
+                  <span class="card-text">${'⭐'.repeat(
                       rating.toFixed(0)
-                    )} </span>
-                    <span>${rating}</span>
-                    <p class="card-text">${cafe_address}</p>
-                  </div>
+                    )}</span>
+                  <br>
+                  <a href="/cafe/${name}" class="card-link">후기 살펴보기</a>
+                  <a href="/cafe/${name}" class="card-link">후기 등록하기</a>
                 </div>
               </div>
               `;
-
-              $('#cafe-box').append(temp_html);
+              $('#card-box').append(temp_html);
             }
           },
         });
       }
     </script>
-  </head>
-
-  <body>
-    <!--bulma nav-->
     <nav
       class="navbar is-warning"
       role="navigation"
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
+        <a class="navbar-item" href="/">
           <img
             src="https://bulma.io/images/bulma-logo.png"
             width="112"
@@ -136,7 +142,7 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item"> Cafe + </a>
+          <a href="/cafe_plus" class="navbar-item"> Cafe + </a>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link"> More </a>
             <div class="navbar-dropdown">
@@ -160,47 +166,13 @@
         </div>
       </div>
     </nav>
+  </head>
+
+  <body>
     <!-- 메인 카페 목록들 -->
     <div class="wrap">
-      <div id="cafe-box" class="row row-cols-1 row-cols-md-4 g-3"></div>
-      <div>
-        <article class="media">
-          <div class="media-left">
-            <figure class="image">
-              <img
-                src="https://beetlemaps.cafe24.com/xe/files/attach/images/151/756/013/c166b02463acef205e90df286982ae6e.jpg"
-                alt="Image"
-              />
-            </figure>
-          </div>
-          <div class="row row-cols-1 row-cols-md-1 g-12">
-            <div href="/comments/${cafe_name}" class="col">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h5 class="card-title">사과카페</h5>
-                  <span class="card-text">
-                    ⭐⭐⭐⭐ (4.3)
-                  </span>
-                  <span>132개의 후기</span>
-                  <p class="card-text">아차산로 어쩌구</p>
-                </div>
-              </div>
-            </div>
-            <div href="/comments/${cafe_name}" class="col">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h5 class="card-title">${cafe_name}</h5>
-                  <span class="card-text">
-                    ${'⭐'.repeat( rating.toFixed(0) )}
-                  </span>
-                  <span>${rating}</span>
-                  <p class="card-text">${cafe_address}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
+      <div id="card-box"></div>
+
     </div>
   </body>
 </html>

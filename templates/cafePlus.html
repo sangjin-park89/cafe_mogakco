@@ -1,15 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
   <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <title>모각코 GOGO | 지도</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Bulma CSS 링크 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- file upload -->
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hahmlet:wght@200;300;400&family=IBM+Plex+Sans+KR:wght@200;300;400;500;600&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Cafe MogakCo</title>
     <style>
+      * {
+        /* font-family: 'Gowun Dodum', sans-serif; */
+        /* font-family: 'Hahmlet', serif; */
+        font-family: 'IBM Plex Sans KR', sans-serif;
+        /* font-family: 'Nanum Gothic', sans-serif; */
+        /* font-family: 'Nanum Myeongjo', serif; */
+      }
+
+      .title {
+        text-align: center;
+        margin: 50px 20px;
+        font-size: 26px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
       .map_wrap,
       .map_wrap * {
         margin: 0;
-        padding: 0;
+        padding: 0px;
         font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
-        font-size: 12px;
+        font-size: 14px;
+      }
+
+      #map,
+      #menu_wrap {
+        border-radius: 20px;
       }
 
       .map_wrap a,
@@ -23,6 +89,7 @@
         position: relative;
         width: 100%;
         height: 500px;
+        margin: 20px auto;
       }
 
       #menu_wrap {
@@ -30,8 +97,8 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 250px;
-        margin: 10px 0 30px 10px;
+        width: 400px;
+        margin: 20px 0 30px 20px;
         padding: 5px;
         overflow-y: auto;
         background: rgba(255, 255, 255, 0.7);
@@ -54,6 +121,13 @@
 
       #menu_wrap .option {
         text-align: center;
+        margin: 10px auto;
+      }
+
+      #menu_wrap .option input {
+        width: 200px;
+        height: 30px;
+        border: none;
       }
 
       #menu_wrap .option p {
@@ -62,6 +136,12 @@
 
       #menu_wrap .option button {
         margin-left: 5px;
+        border: none;
+        width: 50px;
+        height: 30px;
+        background-color: #6baaff;
+        border-radius: 5px;
+        color: white;
       }
 
       #placesList li {
@@ -192,28 +272,93 @@
         color: #777;
       }
     </style>
-  </head>
-  <body>
-    <h4>지도 위 마커를 클릭하면 추천 카페로 등록할 수 있습니다.</h4>
-    <div class="map_wrap">
-      <div
-        id="map"
-        style="width: 100%; height: 100%; position: relative; overflow: hidden"
-      ></div>
+    <nav
+      class="navbar is-warning"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img
+            src="https://bulma.io/images/bulma-logo.png"
+            width="112"
+            height="28"
+          />
+        </a>
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarBasicExample"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
 
-      <div id="menu_wrap" class="bg_white">
-        <div class="option">
-          <div>
-            <form onsubmit="searchPlaces(); return false;">
-              <input type="text" value="동작구 카페" id="keyword" size="15" />
-              <button type="submit">검색</button>
-            </form>
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a href="/cafe_plus" class="navbar-item"> Cafe + </a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> More </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item"> About </a>
+              <a class="navbar-item"> Jobs </a>
+              <a class="navbar-item"> Contact </a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item"> Report an issue </a>
+            </div>
           </div>
         </div>
-        <hr />
-        <ul id="placesList"></ul>
-        <div id="pagination"></div>
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-primary">
+                <strong>Sign up</strong>
+              </a>
+              <a class="button is-light"> Log in </a>
+            </div>
+          </div>
+        </div>
       </div>
+    </nav>
+  </head>
+
+  <body>
+    <div class="title">
+      지도 위 마커를 클릭하면 모각코 추천 카페로 등록이 가능합니다. 🎠
+    </div>
+    <div class="container">
+      <div class="map_wrap">
+        <div
+          id="map"
+          style="
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+          "
+        ></div>
+        <div id="menu_wrap" class="bg_white">
+          <div class="option">
+            <div>
+              <form class="search-box" onsubmit="searchPlaces(); return false;">
+                <input type="text" value="동작구 카페" id="keyword" size="15" />
+                <button type="submit">검색</button>
+              </form>
+            </div>
+          </div>
+          <hr />
+          <ul id="placesList"></ul>
+          <div id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card-columns" id="cards-box"></div>
     </div>
     <script
       type="text/javascript"
@@ -407,7 +552,6 @@
         }
       }
     </script>
-
     <script>
       const plusCafe = (name, lat, lng) => {
         let geocoder = new kakao.maps.services.Geocoder();
@@ -423,7 +567,7 @@
               data: { name, address, lat, lng, rating },
               success: function (response) {
                 alert(response['msg']);
-                window.location.reload();
+                window.location.replace('/');
               },
             });
           }
@@ -436,7 +580,7 @@
         let lng = marker.getPosition().getLng();
         let name = title;
 
-        if (confirm(`모각코 GOGO 추천 카페로 ${name} 등록하시겠습니까?`)) {
+        if (confirm(`모각코 추천 카페로 ${name} 등록하시겠습니까?`)) {
           plusCafe(name, lat, lng);
         }
       }

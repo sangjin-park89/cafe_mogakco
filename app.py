@@ -9,80 +9,128 @@ client = MongoClient(
     'mongodb+srv://test:sparta@cluster0.rf8ug.mongodb.net/?retryWrites=true&w=majority')
 db = client.cafeMogakcoDB
 
-
+# 메인페이지=카페목록페이지 보기
 @app.route('/')
 def home():
     return render_template('index.html')
 
-
-# 엄밀히는 보드(카페) 작성(등록) 페이지
-@app.route('/boards')
-def cafe():
-    return render_template('boards.html')
-
-
-# 카페 읽기 api
-@app.route('/boards/list', methods=['GET']) # 왜 같은 라우트/boards는 안되나?
+# 카페 목록 요청하는 api
+@app.route('/cafe', methods=['GET'])
 def show_cafe():
-    cafes = list(db.cafe.find({}, {'_id': False}))
-    # array = []
-    # for 
-    return jsonify({'all_cafe': cafes})
-    # 이 녀석이 index.html에서 ajax GET 요청으로 DB 읽어온다
+    data = list(db.cafeList.find({}, {'_id': False, 'lat': False, 'lng': False}))
+    return jsonify({'data': data})
+
+# 카페등록페이지 보기
+@app.route('/cafe_plus')
+def cafe():
+    return render_template('cafePlus.html')
+
+# 카페 등록하는 api
+@app.route("/cafe", methods=["POST"])
+def save_cafe():
+    name = request.form['name']
+    address = request.form['address']
+    lat = request.form['lat']
+    lng = request.form['lng']
+    rating = request.form['rating']
+    # 후기에서 입력, 저장된 점수 디비에서 불러오기..
+    createdAt = datetime.now().strftime('%Y-%m-%d')
+    
+    doc = {
+        'name': name,
+        'address': address,
+        'lat': lat,
+        'lng': lng,
+        'rating': float(rating),
+        'createdAt': createdAt
+    }
+
+    db.cafeList.insert_one(doc)
+    return jsonify({'msg': '모각코 추천 카페로 등록되었습니다.'})
+
+
+# 특정카페 상세페이지 보기
+@app.route('/cafe/<string:name>')
+def show_detail(name: str):
+    return render_template('review.html')
+
+# 후기 목록 요청하는 api
+@app.route('/cafe/<string:name>', methods=['GET'])
+def detail_cafe(name: str):
+    data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
+    return jsonify({'data': data})
+
+# 특정카페 후기 등록하는 api
+@app.route("/cafe/<string:name>", methods=["POST"])
+def save_comment(name: str):
+    userid = request.form['userid']
+    content = request.form['content']
+    createdAt = datetime.now().strftime('%Y-%m-%d')
+
+    doc = {
+        'name': name,
+        'userid': userid,
+        'content': content,
+        'createdAt': createdAt,
+    }
+    db.comment.insert_one(doc)
+    return jsonify({'msg': '댓글 등록 성공'})
+
+
 
 
 # 카페 등록 api = 이건 연습용 임시버전이고
 # 실제론 지혜님이 지도api 통해 좌표 등 긁어서 db 저장 예정
-@app.route('/boards', methods=['POST'])
-def save_cafe():
-    cafe_name_receive = request.form['cafe_name_give']
-    cafe_address_receive = request.form['cafe_address_give']
-    today = datetime.now()
-    created_date = today.strftime('%Y-%m-%d')
-    print(today)
-    print(created_date)
+# @app.route('/boards', methods=['POST'])
+# def save_cafe():
+#     cafe_name_receive = request.form['cafe_name_give']
+#     cafe_address_receive = request.form['cafe_address_give']
+#     today = datetime.now()
+#     created_date = today.strftime('%Y-%m-%d')
+#     print(today)
+#     print(created_date)
     
-    doc = {
-        'cafe_name': cafe_name_receive,
-        'cafe_address': cafe_address_receive,
-        'date': created_date,
-    }
-    db.cafe.insert_one(doc)
-    return jsonify({'msg': '저장 완료!'})
+#     doc = {
+#         'cafe_name': cafe_name_receive,
+#         'cafe_address': cafe_address_receive,
+#         'date': created_date,
+#     }
+#     db.cafe.insert_one(doc)
+#     return jsonify({'msg': '저장 완료!'})
 
 
-# 카페 후기 페이지
-@app.route('/comments/<keyword>', methods=['GET', 'POST'])
-def review(keyword):
-# Q. keyword가 카페게시글의 id 이걸 어떻게 매칭해서 불러올지?
-    comments = list(db.cafeReviews.find({}, {'_id': False}))
-    # 여기서 모든 cafeReviews 말고 keyword 맞는거만!
+# # 카페 후기 페이지
+# @app.route('/comments/<keyword>', methods=['GET', 'POST'])
+# def review(keyword):
+# # Q. keyword가 카페게시글의 id 이걸 어떻게 매칭해서 불러올지?
+#     comments = list(db.cafeReviews.find({}, {'_id': False}))
+#     # 여기서 모든 cafeReviews 말고 keyword 맞는거만!
 
-    if request.method == "POST":
-        # 후기작성 인풋에서 넘어오는 값들
-        usability_receive = request.form['usability_give']
-        sound_mood_receive = request.form['sound_mood_give']
-        price_receive = request.form['price_give']
-        comment_receive = request.form['comment_give']
+#     if request.method == "POST":
+#         # 후기작성 인풋에서 넘어오는 값들
+#         usability_receive = request.form['usability_give']
+#         sound_mood_receive = request.form['sound_mood_give']
+#         price_receive = request.form['price_give']
+#         comment_receive = request.form['comment_give']
 
-        # 이 파일 여기서 은밀하게 저장할 값들
-        today = datetime.now()
-        created_date = today.strftime('%Y-%m-%d')
-        cafe_ids = list(db.cafe.find({}, {'id':False}))
+#         # 이 파일 여기서 은밀하게 저장할 값들
+#         today = datetime.now()
+#         created_date = today.strftime('%Y-%m-%d')
+#         cafe_ids = list(db.cafe.find({}, {'id':False}))
 
-        doc = {
-            # 'cafe_id': cafe_name_receive,
-            # 'user_id': user_id,
-            'usability': int(usability_receive),
-            'sound_mood': int(sound_mood_receive),
-            'price': int(price_receive),
-            'comment': comment_receive,
-            'date': created_date
-        }
-        db.cafeReviews.insert_one(doc)
-        return jsonify({'msg': '저장 완료!'})
-    else:
-        return render_template('comments.html', keyword=keyword, comments=comments)
+#         doc = {
+#             # 'cafe_id': cafe_name_receive,
+#             # 'user_id': user_id,
+#             'usability': int(usability_receive),
+#             'sound_mood': int(sound_mood_receive),
+#             'price': int(price_receive),
+#             'comment': comment_receive,
+#             'date': created_date
+#         }
+#         db.cafeReviews.insert_one(doc)
+#         return jsonify({'msg': '저장 완료!'})
+#     else:
+#         return render_template('comments.html', keyword=keyword, comments=comments)
 
 
 if __name__ == '__main__':
