@@ -1,66 +1,114 @@
-<section class="hero is-danger">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="title_a">
-                cafe Mogakco
-            </a>
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
+<!-- Bootstrap CSS -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+  crossorigin="anonymous"
+/>
+<!-- Bulma CSS 링크 -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+/>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"
+></script>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hahmlet:wght@200;300;400&family=IBM+Plex+Sans+KR:wght@200;300;400;500;600&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+<title>Cafe Mogakco</title>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/main.css') }}"
+/>
+<nav class="navbar is-danger" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <h1>Cafe Mogakco</h1>
+    </a>
+    <a
+      role="button"
+      class="navbar-burger"
+      aria-label="menu"
+      aria-expanded="false"
+      data-target="navbarBasicExample"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
 
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-               data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a href="/cafe_plus" class="navbar-item"> Cafe + </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link"> More </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item"> About </a>
+          <a class="navbar-item"> Jobs </a>
+          <a class="navbar-item"> Contact </a>
+          <hr class="navbar-divider" />
+          <a class="navbar-item"> Report an issue </a>
         </div>
-
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <div class="navbar-dropdown">
-                </div>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-danger is-light">
-                            <strong>home</strong>
-                        <a class="button is-danger is-light"
-                        onclick='$("#modal-post").addClass("is-active")'>
-                            <strong>write</strong>
-                        </a>
-                        <a class="button is-danger is-light">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-danger is-light">
-                            <strong>Log in</strong>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</section>
-<section class="section">
-    <div class="modal" id="modal-post">
-      <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title is-danger">카페 등록</p>
-              <button class="delete" aria-label="close" onclick='$("#modal-post").removeClass("is-active")'></button>
-            </header>
-            <section class="modal-card-body">
-              <div class="columns">
-                  <div class="column">
-                      <div class="box">
-                          {% include "map.html" %}
-                      </div>
-                  </div>
-              </div>
-            </section>
-            <footer class="modal-card-foot">
-                  <button class="button is-danger is-pulled-right">Save changes</button>
-                  <button class="button is-danger is-light is-pulled-right"
-                          onclick='$("#modal-post").removeClass("is-active")'>Cancel</button>
-            </footer>
-          </div>
       </div>
-</section>
+    </div>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light"> Log in </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/main.css') }}"
+/>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  /* .title_a {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: xx-large;
+  } */
+  .footer-box {
+    height: 80px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: rgb(233, 233, 233);
+  }
+  .foot p {
+    font-size: 16px;
+    font-weight: 500;
+  }
+</style>
