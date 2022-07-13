@@ -46,7 +46,6 @@
     />
 
     <title>Cafe MogakCo</title>
-    <title>Cafe MogakCo</title>
 
     <style>
       * {
@@ -61,16 +60,20 @@
         margin-top: 20px;
       }
       .wrap {
-        width: 900px;
-        margin: auto;
-      }
-      .container {
+        width: 60%;
+        margin: 30px auto;
+        display:flex;
+        flex-direction:row;
         background-color: beige;
-        margin: 50px auto;
-        padding: 100px;
       }
-      .card {
-        margin: 50px auto;
+      .form-floating {
+        margin: 15px auto;
+      }
+      #comments-box {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        border: 1px solid rebeccapurple;
       }
     </style>
     <script>
@@ -80,32 +83,32 @@
       function listing() {
         $.ajax({
           type: 'GET',
-          url: '/comments',
+          url: '/cafe/<string:name>',
           data: {},
           success: function (response) {
-            // alert(response['msg']);
-            let rows = response['comments'];
-            for (let i = 0; i < rows.length; i++) {
-              let user_id = rows[i]['user_id'];
-              let usability = rows[i]['usability'];
-              let sound_mood = rows[i]['sound_mood'];
-              let price = rows[i]['price'];
-              let comment = rows[i]['comment'];
+            let data = response['data'];
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+              let userid = data[i]['userid'];
+              let usability = data[i]['usability'];
+              let soundmood = data[i]['soundmood'];
+              let price = data[i]['price'];
+              let comment = data[i]['comment'];
 
               let temp_html = `
               <div class="card" style="width: 18rem">
                 <div class="card-body">
-                  <h5 class="card-title">${user_id}</h5>
+                  <h5 class="card-title">${userid}</h5>
                   <p class="card-text">
                     편의성 ${usability}
                   </p>
                   <p class="card-text">
-                    분위기 ${sound_mood}
+                    분위기 ${soundmood}
                   </p>
                   <p class="card-text">
                     금액대 ${price}
                   </p>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">${comment}</h6>
                 </div>
               </div>
               `;
@@ -116,21 +119,21 @@
       }
 
       function posting() {
-        let cafe_name = '데이터에서 끌어와야됨';
         let usability = $('#usability').val();
-        let sound_mood = $('#sound_mood').val();
+        let soundmood = $('#soundmood').val();
         let price = $('#price').val();
         let comment = $('#comment').val();
 
         $.ajax({
           type: 'POST',
-          url: '/comments',
+          url: '/cafe/<string:name>',
           data: {
-            cafe_name_give: cafe_name,
-            usability_give: usability,
-            sound_mood_give: sound_mood,
-            price_give: price,
-            comment_give: comment,
+            name: name,
+            // userid: userid,
+            usability: usability,
+            soundmood: soundmood,
+            price: price,
+            comment: comment,
           },
           success: function (response) {
             alert(response['msg']);
@@ -192,10 +195,9 @@
       </div>
     </nav>
   </head>
-
   <body>
     <div class="wrap">
-      <div class="card" style="width: 18rem">
+      <div class="card" style="width: 24rem">
         <img src="../static/sample.jpg" class="card-img-top" alt="..." />
         <div class="card-body">
           <h5 class="card-title">${cafe_name}</h5>
@@ -217,7 +219,7 @@
           <div class="form-floating">
             <select
               class="form-select"
-              id="sound_mood"
+              id="soundmood"
               aria-label="Floating label select example"
             >
               <option value="1">⭐</option>
@@ -226,7 +228,7 @@
               <option value="4">⭐⭐⭐⭐</option>
               <option value="5">⭐⭐⭐⭐⭐</option>
             </select>
-            <label for="sound_mood">분위기</label>
+            <label for="soundmood">분위기</label>
           </div>
           <div class="form-floating">
             <select
@@ -245,7 +247,6 @@
           <div class="form-floating">
             <textarea
               class="form-control"
-              placeholder="후기를 자유롭게 남겨주세요 :)"
               id="comment"
             ></textarea>
             <label for="comment">Comments</label>
@@ -257,13 +258,13 @@
       </div>
       <!-- 후기 -->
       <div id="comments-box">
-        <div class="card" style="width: 18rem">
+        <div class="card" style="width: 36rem">
           <div class="card-body">
-            <h5 class="card-title">${user_id}</h5>
-            <p class="card-text">편의성 ${}</p>
-            <p class="card-text">분위기 ${}</p>
-            <p class="card-text">금액대 ${}</p>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            <h5 class="card-title">${userid}</h5>
+            <p class="card-text">편의성 ${usability}</p>
+            <p class="card-text">분위기 ${soundmood}</p>
+            <p class="card-text">금액대 ${price}</p>
+            <h6 class="card-subtitle mb-2 text-muted">${comment}</h6>
           </div>
         </div>
       </div>

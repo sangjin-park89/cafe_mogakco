@@ -54,49 +54,36 @@ def save_cafe():
 def show_detail(name: str):
     return render_template('review.html')
 
+
 # 후기 목록 요청하는 api
 @app.route('/cafe/<string:name>', methods=['GET'])
 def detail_cafe(name: str):
     data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
     return jsonify({'data': data})
 
+
 # 특정카페 후기 등록하는 api
 @app.route("/cafe/<string:name>", methods=["POST"])
 def save_comment(name: str):
-    userid = request.form['userid']
-    content = request.form['content']
+    # userid = request.form['userid']
+    usability = request.form['usability']
+    soundmood = request.form['soundmood']
+    price = request.form['price']
+    comment = request.form['comment']
     createdAt = datetime.now().strftime('%Y-%m-%d')
 
     doc = {
         'name': name,
-        'userid': userid,
-        'content': content,
+        # 'userid': userid,
+        'usability':usability,
+        'soundmood':soundmood,
+        'price':price,
+        'comment':comment,
         'createdAt': createdAt,
     }
     db.comment.insert_one(doc)
-    return jsonify({'msg': '댓글 등록 성공'})
+    return jsonify({'msg': '후기 등록 완료'})
 
-
-
-
-# 카페 등록 api = 이건 연습용 임시버전이고
-# 실제론 지혜님이 지도api 통해 좌표 등 긁어서 db 저장 예정
-# @app.route('/boards', methods=['POST'])
-# def save_cafe():
-#     cafe_name_receive = request.form['cafe_name_give']
-#     cafe_address_receive = request.form['cafe_address_give']
-#     today = datetime.now()
-#     created_date = today.strftime('%Y-%m-%d')
-#     print(today)
-#     print(created_date)
-    
-#     doc = {
-#         'cafe_name': cafe_name_receive,
-#         'cafe_address': cafe_address_receive,
-#         'date': created_date,
-#     }
-#     db.cafe.insert_one(doc)
-#     return jsonify({'msg': '저장 완료!'})
 
 
 # # 카페 후기 페이지
