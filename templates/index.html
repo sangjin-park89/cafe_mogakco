@@ -40,8 +40,6 @@
       href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hahmlet:wght@200;300;400&family=IBM+Plex+Sans+KR:wght@200;300;400;500;600&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap"
       rel="stylesheet"
     />
-
-    <title>Cafe MogakCo</title>
     <style>
       .wrap {
         margin: 50px auto;
@@ -56,10 +54,10 @@
       function listing() {
         $.ajax({
           type: 'GET',
-          url: '/listing_cafe',
+          url: '/cafe',
           data: {},
           success: function (response) {
-            let cafes = response['all_cafe'];
+            let cafes = response['data'];
             console.log(cafes);
 
             for (let i = 0; i < cafes.length; i++) {
@@ -68,18 +66,18 @@
               let rating = 4.7; // 지금은 하드코딩이지만 DB에서 하위층 별점 평균내오기
 
               let temp_html = `
-              <div class="col">
-                <div class="card h-100">
-                  <img src="../static/sample.jpg" class="card-img-top" alt="..." />
-                  <div class="card-body">
-                    <h5 class="card-title">${cafe_name}</h5>
-                    <span class="card-text"> ${'⭐'.repeat(rating.toFixed(0))} </span>
-                    <span>${rating}</span>
-                    <p class="card-text">${cafe_address}</p>
-                  </div>
-                </div>
-              </div>
-              `;
+                              <div class="col">
+                                <div class="card h-100">
+                                  <img src="../static/sample.jpg" class="card-img-top" alt="..." />
+                                  <div class="card-body">
+                                    <h5 class="card-title">${cafe_name}</h5>
+                                    <span class="card-text"> ${'⭐'.repeat(rating.toFixed(0))} </span>
+                                    <span>${rating}</span>
+                                    <p class="card-text">${cafe_address}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              `;
 
               $('#cafe-box').append(temp_html);
             }
@@ -100,10 +98,5 @@
         {% endblock %}
         </div>
     {% include "/section/footer.html" %}
-    <!-- 메인 카페 목록들 -->
-    <div class="wrap">
-      <div id="cafe-box" class="row row-cols-1 row-cols-md-4 g-3">
-      </div>
-    </div>
 </body>
 </html>
