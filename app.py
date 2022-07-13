@@ -54,6 +54,26 @@ def save_cafe():
 
     return jsonify({'msg': '모각코GOGO 추천 카페로 등록되었습니다.'})
 
+@app.route("/comment/<string:name>", methods=["POST"])
+def save_comment(name: str):
+    userid = request.form['userid']
+    content = request.form['content']
+    createdAt = datetime.now().strftime('%Y-%m-%d')
+
+    doc = {
+        'name': name,
+        'userid': userid,
+        'content': content,
+        'createdAt': createdAt,
+    }
+    db.comment.insert_one(doc)
+    return jsonify({'msg': '댓글 등록 성공'})
+
+@app.route('/comment/<string:name>', methods=['GET'])
+def get_comments(name: str):
+    data = list(db.comment.find({'name': name}, {'_id': False}))
+    return jsonify({'data': data})
+
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5555, debug=True)
