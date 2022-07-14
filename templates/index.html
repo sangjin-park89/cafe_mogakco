@@ -20,6 +20,12 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
+    <!-- Font Awesome CSS -->
+    <link
+      href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -33,6 +39,7 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
     <!-- file upload -->
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
@@ -96,8 +103,8 @@
                   <h6 class="card-subtitle mb-2 text-muted">${address}</h6>
                   <span class="card-text">${rating}</span>
                   <span class="card-text">${'⭐'.repeat(
-                      rating.toFixed(0)
-                    )}</span>
+                    rating.toFixed(0)
+                  )}</span>
                   <br>
                   <a href="/cafe/${name}" class="card-link">후기 살펴보기</a>
                   <a href="/cafe/${name}" class="card-link">후기 등록하기</a>
@@ -111,18 +118,12 @@
       }
     </script>
     <nav
-      class="navbar is-warning"
+      class="navbar is-danger"
       role="navigation"
       aria-label="main navigation"
     >
       <div class="navbar-brand">
-        <a class="navbar-item" href="/">
-          <img
-            src="https://bulma.io/images/bulma-logo.png"
-            width="112"
-            height="28"
-          />
-        </a>
+        <a class="navbar-item" href="/"> Cafe MogakCo </a>
         <a
           role="button"
           class="navbar-burger"
@@ -153,10 +154,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-primary">
-                <strong>Sign up</strong>
-              </a>
-              <a class="button is-light"> Log in </a>
+              <a href="/login" class="button is-light"> Log in </a>
             </div>
           </div>
         </div>
