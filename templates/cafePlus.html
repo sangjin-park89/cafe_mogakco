@@ -258,7 +258,6 @@
         let lat = marker.getPosition().getLat();
         let lng = marker.getPosition().getLng();
         let nameWithNoSpace = title.replaceAll(/\s/g, '')
-        console.log('name', nameWithNoSpace);
 
         $.ajax({
             type: 'GET',
@@ -266,7 +265,6 @@
             data: {},
             success: function (response) {
                 data = response['data'];
-                console.log('data', data);
                 if (data) {
                     if (confirm('이미 등록된 카페입니다.\n해당 카페 상세페이지로 이동하겠습니까?')) {
                         location.href = `/cafe/${data.name}`;

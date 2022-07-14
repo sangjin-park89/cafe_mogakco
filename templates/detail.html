@@ -59,8 +59,6 @@
                 url: `/cafe/detail/${cafeName}`,
                 data: {},
                 success: function (response) {
-                    console.log('res', response);
-                    console.log('asdf', response.data.address);
                     const {address, createdAt, name, rating} = response.data
                           let detailCafe = `
                           <div className="content">
@@ -91,7 +89,6 @@
                 data: {},
                 success: function (response) {
                     let detail = response['data'];
-                    console.log(detail);
                     for (let i = 0; i < detail.length; i++) {
                         let name = detail[i]['name'];
                         let userid = detail[i]['userid'];

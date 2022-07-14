@@ -41,11 +41,9 @@
           data: {},
           success: function (response) {
             let data = response['data'];
-            console.log(data);
 
             for (let i = 0; i < data.length; i++) {
               let name = data[i]['name'];
-                console.log('name', name);
               let address = data[i]['address'];
               let rating = data[i]['rating']; // 별점 평균내오기
 
