@@ -5,20 +5,27 @@
 
     <style>
       .wrap {
-        width: 80%;
+        width: 60%;
         margin: 50px auto;
         background-color: antiquewhite;
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
       }
       #cafe {
         margin: 10px;
+      }
+      #card-box {
+        min-width: 500px;
       }
       .map-box {
         background-color: beige;
         width: 100%;
         border: 1px solid rebeccapurple;
         margin: 10px;
+        min-width: 400px;
+        max-width: 600px;
+        min-height: 500px;
       }
     </style>
     <script>
@@ -38,7 +45,7 @@
             for (let i = 0; i < data.length; i++) {
               let name = data[i]['name'];
               let address = data[i]['address'];
-              let rating = data[i]['rating']; // 지금은 하드코딩이지만 DB에서 하위층 별점 평균내오기
+              let rating = data[i]['rating']; // 별점 평균내오기
 
               let temp_html = `
               <div id="cafe" class="card" style="width: 30rem;">
@@ -63,10 +70,10 @@
     </script>
 </head>
   <body>
+    <div class="wrap">
+      <div id="card-box"></div>
       <div class="map-box">지도 들어갈 곳?</div>
-      <!-- 메인 카페 목록들 -->
-      <div id="card-box" class="wrap">
-      </div>
+    </div>
   </body>
-  {% include "/section/footer.html" %}
+  <!-- {% include "/section/footer.html" %} -->
 </html>
