@@ -6,8 +6,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 client = MongoClient(
-    'mongodb+srv://byunjihye:asdf33@cluster0.qulah.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta2
+    'mongodb+srv://test:sparta@cluster0.rf8ug.mongodb.net/?retryWrites=true&w=majority')
+db = client.cafeMogakcoDB
 
 # 메인페이지=카페목록페이지 보기
 @app.route('/')
