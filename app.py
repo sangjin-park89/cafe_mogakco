@@ -6,8 +6,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 client = MongoClient(
-    'mongodb+srv://test:sparta@cluster0.rf8ug.mongodb.net/?retryWrites=true&w=majority')
-db = client.cafeMogakcoDB
+    'mongodb+srv://byunjihye:asdf33@cluster0.qulah.mongodb.net/?retryWrites=true&w=majority')
+db = client.dbsparta2
 
 # 메인페이지=카페목록페이지 보기
 @app.route('/')
@@ -55,13 +55,6 @@ def show_detail(name: str):
     return render_template('review.html')
 
 
-# 후기 목록 요청하는 api
-@app.route('/cafe/<string:name>', methods=['GET'])
-def detail_cafe(name: str):
-    data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
-    return jsonify({'data': data})
-
-
 # 특정카페 후기 등록하는 api
 @app.route("/cafe/<string:name>", methods=["POST"])
 def save_comment(name: str):
@@ -73,8 +66,11 @@ def save_comment(name: str):
     createdAt = datetime.now().strftime('%Y-%m-%d')
 
     doc = {
-        'name': name,
+        'name': name, # 디비에 저장하려는 카페이름 name으로 /cafe/<string:name>의 스트링네임을 어떻게 넣는지?
+        # 그냥 이 상태로는 정의가 안 되어있다고 안되더라구요ㅜㅜ
         # 'userid': userid,
+        # Q. 현재 로그인된 사람만 후기 작성 가능하니 로그인 된 user정보를 어떻게 작성자로 넣어야하는지?
+        # 네비바에 예를 들어 ㅇㅇㅇ님 환영합니다 같은 곳이 있어야하고, 그 요소 값으로 끌어다 넣어야하는지?
         'usability':usability,
         'soundmood':soundmood,
         'price':price,
@@ -84,6 +80,12 @@ def save_comment(name: str):
     db.comment.insert_one(doc)
     return jsonify({'msg': '후기 등록 완료'})
 
+
+# 후기 목록 요청하는 api
+@app.route('/cafe/<string:name>', methods=['GET'])
+def detail_cafe(name: str):
+    data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
+    return jsonify({'data': data})
 
 
 # # 카페 후기 페이지
