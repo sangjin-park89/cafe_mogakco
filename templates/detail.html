@@ -41,8 +41,6 @@
     />
 
     <title>Cafe MogakCo</title>
-    <style>
-    </style>
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init()
@@ -61,12 +59,9 @@
                 success: function (response) {
                     const {address, createdAt, name, rating} = response.data
                           let detailCafe = `
-                          <div className="content">
-<br>
-<br>
-<br>
+                          <div class="content">
                                 <p>
-                                     <medium>카페명: ${name}</medium>
+                                    <strong>카페명: ${name}</strong>
                                     <br><small>카페 별점: ${rating}</small>
                                     <br>카페 추천 날짜: ${createdAt}
                                     <br>주소: ${address}
@@ -78,6 +73,8 @@
                 },
             })
         }
+
+
 
         function listing() {
             let pathname = decodeURI(document.location.pathname);
@@ -98,9 +95,9 @@
                         let price = detail[i]['price'];
                         let comment = detail[i]['comment'];
                         let temp_html = `
-                          <div className="content">
+                          <div class="content">
                                 <p>
-                                     <medium>작성자: ${userid}</medium>
+                                    <strong>작성자: ${userid}</strong>
                                     <br><small>편의성 ${usability}</small> <small>분위기 ${mood}</small>
                                     <small>금액대 ${price}</small>
                                     <br>작성일: ${createdAt}
@@ -108,12 +105,13 @@
                                 </p>
                           </div>
                           `;
-
                         $('#comments-box').append(temp_html);
                     }
                 },
             });
         }
+        let temp = `${cafeName}`
+                    $('#title-box').append(temp);
     </script>
 
     <title>Mogakco | Cafe</title>
@@ -122,25 +120,96 @@
 
 </head>
 <body>
-{% include "/section/header.html" %}
-<section class="cafe_detail">
-    <div class="columns is-mobile">
-        <div class="column">
-            <figure class="image is-16by9">
-                <img class="has-ratio" width="640" height="360"
-                     src="https://cdn.pixabay.com/photo/2017/06/20/23/15/coffee-2425303_960_720.jpg">
-            </figure>
-        </div>
-        <div class="column" id="comments-box">
-            <article class="media">
-                <div id="comment-box" class="media-content">
-
+    {% include "/section/header.html" %}
+    <h2 class="title is-2" id="title-box"></h2>
+    <section class="cafe_detail">
+            <div class="columns is-mobile">
+                <div class="column">
+                    <figure class="image is-16by9">
+                        <img class="has-ratio" width="640" height="360"
+                                src="https://cdn.pixabay.com/photo/2017/06/20/23/15/coffee-2425303_960_720.jpg">
+                    </figure>
                 </div>
-            </article>
+                <div id="comments-box" class="column is-6">
+                    <!--               리뷰 자리                  -->
+                </div>
+            </div>
+        <div class="box">
+            <div class="columns">
+                <div class="column">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="control is-left" id="post_comment">
+                                <strong>작성자</strong><br>
+                                <input class="input is-danger" style="width:163px;" type="text" placeholder="${작성자 아이디}"
+                                       disabled>
+                            </div>
+                            <div class="select is-danger" id="post_comment">
+                                <select>
+                                    <option selected>접근성</option>
+                                    <option>⭐⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐</option>
+                                    <option>⭐⭐</option>
+                                    <option>⭐</option>
+                                </select>
+                            </div>
+                            <div class="select is-danger" id="post_comment">
+                                <select>
+                                    <option selected>편의성</option>
+                                    <option>⭐⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐</option>
+                                    <option>⭐⭐</option>
+                                    <option>⭐</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <br>
+                            <div class="select is-danger" id="post_comment">
+                                <select>
+                                    <option selected>분위기</option>
+                                    <option>⭐⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐</option>
+                                    <option>⭐⭐</option>
+                                    <option>⭐</option>
+                                </select>
+                            </div>
+                            <div class="select is-danger" id="post_comment">
+                                <select>
+                                    <option selected>가격</option>
+                                    <option>⭐⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐⭐</option>
+                                    <option>⭐⭐⭐</option>
+                                    <option>⭐⭐</option>
+                                    <option>⭐</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="field">
+                                <p class="control">
+                                    <textarea class="textarea" placeholder="Add a comment..."></textarea>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control">
+                                    <button class="button">Post comment</button>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
-</section>
-{% include "/section/footer.html" %}
+    </section>
+
+    {% include "/section/footer.html" %}
 </body>
 </html>
