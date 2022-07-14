@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+  <head>
     {% include "/section/header.html" %}
 
     <style>
       .wrap {
-        width: 65%;
+        width: 80%;
         margin: 50px auto;
-        /* background-color: antiquewhite; */
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -19,14 +18,16 @@
         min-width: 500px;
       }
       .map-box {
-        background-color: beige;
+        /* background-color: beige; */
         width: 100%;
-        /* border: 1px solid rebeccapurple; */
         margin: 10px;
         min-width: 400px;
-        max-width: 600px;
         min-height: 530px;
+        /* border-radius: 15px; */
+      }
+      .map-box > img {
         border-radius: 15px;
+        width: 800px;
       }
     </style>
     <script>
@@ -54,11 +55,10 @@
                   <h6 class="card-subtitle mb-2 text-muted">${address}</h6>
                   <span class="card-text">${rating}</span>
                   <span class="card-text">${'⭐'.repeat(
-                      Number(rating).toFixed(0)
-                    )}</span>
+                    Number(rating).toFixed(0)
+                  )}</span>
                   <br>
-                  <a href="/cafe/${name}" class="card-link">후기 살펴보기</a>
-                  <a href="/review/${name}" class="card-link">후기 등록하기</a>
+                  <a href="/cafe/${name}" class="card-link">후기 작성/둘러보기</a>
                 </div>
               </div>
               `;
@@ -68,11 +68,13 @@
         });
       }
     </script>
-</head>
+  </head>
   <body>
     <div class="wrap">
       <div id="card-box"></div>
-      <div class="map-box">지도 들어갈 곳?</div>
+      <div class="map-box">
+        <img src="../static/cafe.jpg" alt="카페 사진">
+      </div>
     </div>
   </body>
   {% include "/section/footer.html" %}
