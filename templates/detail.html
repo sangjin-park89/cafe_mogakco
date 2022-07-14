@@ -62,10 +62,13 @@
       #post_comment {
         margin-bottom: 10px;
       }
+      .box > img {
+        border-radius: 15px;
+      }
       #cafe-info {
-        margin: 10px 0 0 15px;
-        padding-top: 10px;
-        border: 1px solid rebeccapurple;
+        margin: 15px 0 0 15px;
+        padding-top: 5px;
+        /* border: 1px solid rebeccapurple; */
         font-size: 18px;
       }
     </style>
@@ -178,34 +181,34 @@
           <div class="column">
             <div class="control is-left" id="post_comment">
             </div>
-            <div class="select is-danger" id="usability">
-              <select>
+            <div class="select is-danger">
+              <select id="usability">
                 <option selected>편의성</option>
-                <option>⭐⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐</option>
-                <option>⭐⭐</option>
-                <option>⭐</option>
+                <option value=5>⭐⭐⭐⭐⭐</option>
+                <option value=4>⭐⭐⭐⭐</option>
+                <option value=3>⭐⭐⭐</option>
+                <option value=2>⭐⭐</option>
+                <option value=1>⭐</option>
               </select>
             </div>
-            <div class="select is-danger" id="mood">
-              <select>
+            <div class="select is-danger">
+              <select id="mood">
                 <option selected>분위기</option>
-                <option>⭐⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐</option>
-                <option>⭐⭐</option>
-                <option>⭐</option>
+                <option value=5>⭐⭐⭐⭐⭐</option>
+                <option value=4>⭐⭐⭐⭐</option>
+                <option value=3>⭐⭐⭐</option>
+                <option value=2>⭐⭐</option>
+                <option value=1>⭐</option>
               </select>
             </div>
-            <div class="select is-danger" id="price">
-              <select>
+            <div class="select is-danger">
+              <select id="price">
                 <option selected>금액대</option>
-                <option>⭐⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐</option>
-                <option>⭐⭐</option>
-                <option>⭐</option>
+                <option value=5>⭐⭐⭐⭐⭐</option>
+                <option value=4>⭐⭐⭐⭐</option>
+                <option value=3>⭐⭐⭐</option>
+                <option value=2>⭐⭐</option>
+                <option value=1>⭐</option>
               </select>
             </div>
           </div>
