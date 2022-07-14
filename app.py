@@ -71,7 +71,7 @@ def show_detail(name: str):
 # 후기 목록 요청하는 api
 @app.route('/cafe/<string:name>', methods=['GET'])
 def detail_cafe(name: str):
-    data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
+    data = list(db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False}))
     return jsonify({'data': data})
 
 
