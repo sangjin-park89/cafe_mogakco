@@ -49,12 +49,20 @@ def cafe():
 # 카페 등록하는 api
 @app.route("/cafe", methods=["POST"])
 def save_cafe():
-    name = request.form['name']
-    address = request.form['address']
-    lat = request.form['lat']
-    lng = request.form['lng']
-    rating = request.form['rating']
-    createdAt = datetime.now().strftime('%Y-%m-%d')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        name = request.form['name']
+        address = request.form['address']
+        lat = request.form['lat']
+        lng = request.form['lng']
+        rating = request.form['rating']
+        createdAt = datetime.now().strftime('%Y-%m-%d')
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 올바르지 않습니다."))
 
     doc = {
         'name': name,
@@ -87,7 +95,6 @@ def save_comment():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({'username': payload['id']})
-        print(user_info)
         userid = user_info['username']
         name = request.form['name']
         usability = request.form['usability']

@@ -109,7 +109,6 @@
           success: function (response) {
             let detail = response['data'];
             for (let i = 0; i < detail.length; i++) {
-              let name = detail[i]['name'];
               let userid = detail[i]['userid'];
               let createdAt = detail[i]['createdAt'];
               let usability = detail[i]['usability'];
@@ -137,20 +136,18 @@
       }
 
       function posting() {
-        // let name =
-        // let userid =
+       let pathname = decodeURI(document.location.pathname);
+        let splitPathname = pathname.split('/');
+        let cafeName = splitPathname[2];
         let usability = $('#usability').val();
         let mood = $('#mood').val();
         let price = $('#price').val();
         let comment = $('#comment').val();
-        console.log(usability, mood, price, comment);
-
         $.ajax({
           type: 'POST',
-          url: `/comment/${cafeName}`,
+          url: `/comment`,
           data: {
-            userid: userid,
-            name: name,
+            name: cafeName,
             usability: usability,
             mood: mood,
             price: price,
@@ -166,15 +163,9 @@
   </head>
   <body>
     {% include "/section/header.html" %}
-    <div class="title-box">
-      <p class="title is-2" id="title-box"></p>
-    </div>
     <section class="cafe_detail">
       <div class="columns is-mobile">
         <div class="box">
-          <!-- <div class="columns"> -->
-          <!-- <div class="column"> -->
-          <!-- <div class="columns"> -->
           <img
             class="has-ratio"
             width="640"
@@ -186,15 +177,6 @@
           </div>
           <div class="column">
             <div class="control is-left" id="post_comment">
-              <strong>작성자</strong>
-              <input
-                class="input is-danger"
-                style="width: 163px"
-                type="text"
-                placeholder="${작성자 아이디}"
-                disabled
-                id="userid"
-              />
             </div>
             <div class="select is-danger" id="usability">
               <select>
@@ -227,9 +209,6 @@
               </select>
             </div>
           </div>
-          <!-- </div> -->
-          <!-- </div> -->
-          <!-- </div> -->
           <article class="media">
             <div class="media-content">
               <div class="field">
