@@ -62,6 +62,12 @@
       #post_comment {
         margin-bottom: 10px;
       }
+      #cafe-info {
+        margin: 10px 0 0 15px;
+        padding-top: 10px;
+        border: 1px solid rebeccapurple;
+        font-size: 18px;
+      }
     </style>
     <script>
       $(document).ready(function () {
@@ -81,17 +87,13 @@
           success: function (response) {
             const { address, createdAt, name, rating } = response.data;
             let detailCafe = `
-                          <div class="content">
-                                <p>
-                                    <strong>카페명: ${name}</strong>
-                                    <br><small>카페 별점: ${rating}</small>
-                                    <br>카페 추천 날짜: ${createdAt}
-                                    <br>주소: ${address}
-                                </p>
-                          </div>
-                          `;
-
-            $('#comments-box').append(detailCafe);
+              <div class="content">
+                <p>${name} || ${address}</p>
+                <p>후기 평균 : ${rating}<p/>
+                <p>등록일자 : ${createdAt}<p/>
+              </div>
+            `;
+            $('#cafe-info').append(detailCafe);
           },
         });
       }
@@ -179,6 +181,9 @@
             height="360"
             src="https://cdn.pixabay.com/photo/2017/06/20/23/15/coffee-2425303_960_720.jpg"
           />
+          <div id="cafe-info">
+            <!-- 카페정보 들어올 곳 -->
+          </div>
           <div class="column">
             <div class="control is-left" id="post_comment">
               <strong>작성자</strong>
@@ -238,7 +243,9 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button onclick="posting()" class="button">Post comment</button>
+                  <button onclick="posting()" class="button">
+                    Post comment
+                  </button>
                 </p>
               </div>
             </div>
