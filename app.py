@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-# import jwt
+import jwt
 import datetime
 import hashlib
 from flask import Flask, render_template, jsonify, request, redirect, url_for
@@ -12,6 +12,8 @@ client = MongoClient(
     'mongodb+srv://byunjihye:asdf33@cluster0.qulah.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta2
 
+
+SECRET_KEY = 'SPARTA'
 
 # 메인페이지=카페목록페이지 보기
 @app.route('/')

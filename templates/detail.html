@@ -133,6 +133,33 @@
         let temp = `${cafeName}`;
         $('#title-box').append(temp);
       }
+
+      function posting() {
+        // let name =
+        // let userid =
+        let usability = $('#usability').val();
+        let mood = $('#mood').val();
+        let price = $('#price').val();
+        let comment = $('#comment').val();
+        console.log(usability, mood, price, comment);
+
+        $.ajax({
+          type: 'POST',
+          url: `/comment/${cafeName}`,
+          data: {
+            userid: userid,
+            name: name,
+            usability: usability,
+            mood: mood,
+            price: price,
+            comment: comment,
+          },
+          success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+          },
+        });
+      }
     </script>
   </head>
   <body>
@@ -161,9 +188,10 @@
                 type="text"
                 placeholder="${작성자 아이디}"
                 disabled
+                id="userid"
               />
             </div>
-            <div class="select is-danger" id="post_comment">
+            <div class="select is-danger" id="usability">
               <select>
                 <option selected>편의성</option>
                 <option>⭐⭐⭐⭐⭐</option>
@@ -173,7 +201,7 @@
                 <option>⭐</option>
               </select>
             </div>
-            <div class="select is-danger" id="post_comment">
+            <div class="select is-danger" id="mood">
               <select>
                 <option selected>분위기</option>
                 <option>⭐⭐⭐⭐⭐</option>
@@ -183,7 +211,7 @@
                 <option>⭐</option>
               </select>
             </div>
-            <div class="select is-danger" id="post_comment">
+            <div class="select is-danger" id="price">
               <select>
                 <option selected>금액대</option>
                 <option>⭐⭐⭐⭐⭐</option>
@@ -202,6 +230,7 @@
               <div class="field">
                 <p class="control">
                   <textarea
+                    id="comment"
                     class="textarea"
                     placeholder="Add a comment..."
                   ></textarea>
@@ -209,7 +238,7 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button class="button">Post comment</button>
+                  <button onclick="posting()" class="button">Post comment</button>
                 </p>
               </div>
             </div>
