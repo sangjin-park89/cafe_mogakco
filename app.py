@@ -107,9 +107,9 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-
+SECRET_KEY = 'SPARTA'
 @app.route('/')
-def home():
+def go_home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
