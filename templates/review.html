@@ -1,169 +1,103 @@
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    {% include "/section/header.html" %}
-    <style>
-      .posting-box {
-        width: 500px;
-        margin-top: 20px;
-      }
-      .wrap {
-        width: 60%;
-        margin: 30px auto;
-        display:flex;
-        flex-direction:row;
-        background-color: beige;
-      }
-      .form-floating {
-        margin: 15px auto;
-      }
-      #comments-box {
-        display: flex;
-        flex-direction: column;
-        margin: 0 auto;
-        border: 1px solid rebeccapurple;
-      }
-    </style>
-    <script>
-        $(document).ready(function () {
-          listing();
-      });
-      function listing() {
-        $.ajax({
-          type: 'GET',
-          url: `/cafe/${nameWithNoSpace}`,
-          data: {},
-          success: function (response) {
-            let data = response['data'];
-            console.log(data);
-            for (let i = 0; i < data.length; i++) {
-              let userid = data[i]['userid'];
-              let usability = data[i]['usability'];
-              let soundmood = data[i]['soundmood'];
-              let price = data[i]['price'];
-              let comment = data[i]['comment'];
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-              let temp_html = `
-              <div class="card" style="width: 18rem">
-                <div class="card-body">
-                  <h5 class="card-title">${userid}</h5>
-                  <p class="card-text">
-                    편의성 ${usability}
-                  </p>
-                  <p class="card-text">
-                    분위기 ${soundmood}
-                  </p>
-                  <p class="card-text">
-                    금액대 ${price}
-                  </p>
-                  <h6 class="card-subtitle mb-2 text-muted">${comment}</h6>
-                </div>
-              </div>
-              `;
-              $('#comments-box').append(temp_html);
-            }
-          },
-        });
-      }
+    <title>Document</title>
+</head>
+<script>
 
-      function posting() {
+    function posting() {
+        let pathname = decodeURI(document.location.pathname);
+        let splitPathname = pathname.split('/');
+
+        let cafeName = splitPathname[2];
         let usability = $('#usability').val();
-        let soundmood = $('#soundmood').val();
+        let mood = $('#mood').val();
         let price = $('#price').val();
         let comment = $('#comment').val();
-
         $.ajax({
-          type: 'POST',
-          url: '/cafe/<string:name>',
-          data: {
-            name: name,
-            // userid: userid,
-            usability: usability,
-            soundmood: soundmood,
-            price: price,
-            comment: comment,
-          },
-          success: function (response) {
-            alert(response['msg']);
-            window.location.reload();
-          },
+            type: 'POST',
+            url: `/comment`,
+            data: {
+                name: cafeName,
+                usability: usability,
+                mood: mood,
+                price: price,
+                comment: comment,
+            },
+            success: function (response) {
+                alert(response['msg']);
+                window.location.reload();
+            },
         });
-      }
-    </script>
-  </head>
-  <body>
-    <div class="wrap">
-      <div class="card" style="width: 24rem">
-        <img src="../static/sample.jpg" class="card-img-top" alt="..." />
+    }
+</script>
+<body>
+<div class="wrap">
+    <div class="card" style="width: 24rem">
         <div class="card-body">
-          <h5 class="card-title">${cafe_name}</h5>
-          <p class="card-text">${cafe_address}</p>
-          <div class="form-floating">
-            <select
-              class="form-select"
-              id="usability"
-              aria-label="Floating label select example"
-            >
-              <option value="1">⭐</option>
-              <option value="2">⭐⭐</option>
-              <option selected value="3">⭐⭐⭐</option>
-              <option value="4">⭐⭐⭐⭐</option>
-              <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-            <label for="usability">편의성</label>
-          </div>
-          <div class="form-floating">
-            <select
-              class="form-select"
-              id="soundmood"
-              aria-label="Floating label select example"
-            >
-              <option value="1">⭐</option>
-              <option value="2">⭐⭐</option>
-              <option selected value="3">⭐⭐⭐</option>
-              <option value="4">⭐⭐⭐⭐</option>
-              <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-            <label for="soundmood">분위기</label>
-          </div>
-          <div class="form-floating">
-            <select
-              class="form-select"
-              id="price"
-              aria-label="Floating label select example"
-            >
-              <option value="1">⭐</option>
-              <option value="2">⭐⭐</option>
-              <option selected value="3">⭐⭐⭐</option>
-              <option value="4">⭐⭐⭐⭐</option>
-              <option value="5">⭐⭐⭐⭐⭐</option>
-            </select>
-            <label for="price">금액대</label>
-          </div>
-          <div class="form-floating">
+            <div class="form-floating">
+                <select
+                        class="form-select"
+                        id="usability"
+                        aria-label="Floating label select example"
+                >
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option selected value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
+                <label for="usability">편의성</label>
+            </div>
+            <div class="form-floating">
+                <select
+                        class="form-select"
+                        id="mood"
+                        aria-label="Floating label select example"
+                >
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option selected value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
+                <label for="mood">분위기</label>
+            </div>
+            <div class="form-floating">
+                <select
+                        class="form-select"
+                        id="price"
+                        aria-label="Floating label select example"
+                >
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option selected value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
+                <label for="price">금액대</label>
+            </div>
+            <div class="form-floating">
+                <label for="comment">
             <textarea
-              class="form-control"
-              id="comment"
+                    class="form-control"
+                    id="comment"
             ></textarea>
-            <label for="comment">Comments</label>
-          </div>
-          <button onclick="posting()" type="button" class="btn btn-primary">
-            후기 등록
-          </button>
+                    댓글
+                </label>
+            </div>
+            <button onclick="posting()" type="button" class="btn btn-primary">
+                후기 등록
+            </button>
         </div>
-      </div>
-      <!-- 후기 -->
-      <div id="comments-box">
-        <div class="card" style="width: 36rem">
-          <div class="card-body">
-            <h5 class="card-title">${userid}</h5>
-            <p class="card-text">편의성 ${usability}</p>
-            <p class="card-text">분위기 ${soundmood}</p>
-            <p class="card-text">금액대 ${price}</p>
-            <h6 class="card-subtitle mb-2 text-muted">${comment}</h6>
-          </div>
-        </div>
-      </div>
     </div>
-  </body>
+</div>
+
+</body>
 </html>
