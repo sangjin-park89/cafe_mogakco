@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-  <lang="ko">
-  <head>
+<html lang="ko">
+<head>
     {% include "/section/header.html" %}
 
     <style>
@@ -50,7 +50,7 @@
               let temp_html = `
               <div id="cafe" class="card" style="width: 30rem;">
                 <div class="card-body">
-                  <h5 class="card-title">${name}</h5>
+                  <a href="/detail/${name}" onclick="" class="card-title">${name}</a>
                   <h6 class="card-subtitle mb-2 text-muted">${address}</h6>
                   <span class="card-text">${rating}</span>
                   <span class="card-text">${'⭐'.repeat(
