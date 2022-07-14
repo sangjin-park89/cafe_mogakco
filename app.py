@@ -1,6 +1,4 @@
 from pymongo import MongoClient
-from bs4 import BeautifulSoup
-import requests
 from flask import Flask, render_template, jsonify, request
 from datetime import datetime
 
@@ -9,10 +7,18 @@ client = MongoClient(
     'mongodb+srv://byunjihye:asdf33@cluster0.qulah.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta2
 
+
 # 메인페이지=카페목록페이지 보기
 @app.route('/')
 def home():
     return render_template('index.html')
+
+
+# 지혜님 만드신 지도api 확인용 단독 html 라우팅
+@app.route('/map')
+def map():
+    return render_template('map.html')
+
 
 # 카페 목록 요청하는 api
 @app.route('/cafe', methods=['GET'])
@@ -20,10 +26,12 @@ def show_cafe():
     data = list(db.cafeList.find({}, {'_id': False, 'lat': False, 'lng': False}))
     return jsonify({'data': data})
 
+
 # 카페등록페이지 보기
 @app.route('/cafe_plus')
 def cafe():
     return render_template('cafePlus.html')
+
 
 # 카페 등록하는 api
 @app.route("/cafe", methods=["POST"])
@@ -55,6 +63,13 @@ def show_detail(name: str):
     return render_template('review.html')
 
 
+# 후기 목록 요청하는 api
+@app.route('/cafe/<string:name>', methods=['GET'])
+def detail_cafe(name: str):
+    data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
+    return jsonify({'data': data})
+
+
 # 특정카페 후기 등록하는 api
 @app.route("/cafe/<string:name>", methods=["POST"])
 def save_comment(name: str):
@@ -71,6 +86,8 @@ def save_comment(name: str):
         # 'userid': userid,
         # Q. 현재 로그인된 사람만 후기 작성 가능하니 로그인 된 user정보를 어떻게 작성자로 넣어야하는지?
         # 네비바에 예를 들어 ㅇㅇㅇ님 환영합니다 같은 곳이 있어야하고, 그 요소 값으로 끌어다 넣어야하는지?
+        'name': name,
+        # 'userid': userid,
         'usability':usability,
         'soundmood':soundmood,
         'price':price,
@@ -81,45 +98,56 @@ def save_comment(name: str):
     return jsonify({'msg': '후기 등록 완료'})
 
 
-# 후기 목록 요청하는 api
-@app.route('/cafe/<string:name>', methods=['GET'])
-def detail_cafe(name: str):
-    data = db.cafeList.find_one({'name': name}, {'_id': False, 'lat': False, 'lng': False})
-    return jsonify({'data': data})
+# 정희님 담당쓰 건드리기가 무서워용
+@app.route('/login')
+def login():
+    msg = request.args.get("msg")
+    return render_template('login.html', msg=msg)
+
+@app.route('/user/login', methods=['POST'])
+def sign_in():
+    # 로그인
+    username_receive = request.form['username_give']
+    password_receive = request.form['password_give']
+
+    pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    result = db.users.find_one({'username': username_receive, 'password': pw_hash})
+
+    if result is not None:
+        payload = {
+         'id': username_receive,
+         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+
+        return jsonify({'result': 'success', 'token': token})
+    # 찾지 못하면
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
 
-# # 카페 후기 페이지
-# @app.route('/comments/<keyword>', methods=['GET', 'POST'])
-# def review(keyword):
-# # Q. keyword가 카페게시글의 id 이걸 어떻게 매칭해서 불러올지?
-#     comments = list(db.cafeReviews.find({}, {'_id': False}))
-#     # 여기서 모든 cafeReviews 말고 keyword 맞는거만!
+@app.route('/user/signup', methods=['POST'])
+def sign_up():
+    username_receive = request.form['username_give']
+    password_receive = request.form['password_give']
+    password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    doc = {
+        "username": username_receive,                               # 아이디
+        "password": password_hash,                                  # 비밀번호
+        "profile_name": username_receive,                           # 프로필 이름 기본값은 아이디
+        "profile_pic": "",                                          # 프로필 사진 파일 이름
+        "profile_pic_real": "profile_pics/profile_placeholder.png", # 프로필 사진 기본 이미지
+        "profile_info": ""                                          # 프로필 한 마디
+    }
+    db.users.insert_one(doc)
+    return jsonify({'result': 'success'})
 
-#     if request.method == "POST":
-#         # 후기작성 인풋에서 넘어오는 값들
-#         usability_receive = request.form['usability_give']
-#         sound_mood_receive = request.form['sound_mood_give']
-#         price_receive = request.form['price_give']
-#         comment_receive = request.form['comment_give']
 
-#         # 이 파일 여기서 은밀하게 저장할 값들
-#         today = datetime.now()
-#         created_date = today.strftime('%Y-%m-%d')
-#         cafe_ids = list(db.cafe.find({}, {'id':False}))
-
-#         doc = {
-#             # 'cafe_id': cafe_name_receive,
-#             # 'user_id': user_id,
-#             'usability': int(usability_receive),
-#             'sound_mood': int(sound_mood_receive),
-#             'price': int(price_receive),
-#             'comment': comment_receive,
-#             'date': created_date
-#         }
-#         db.cafeReviews.insert_one(doc)
-#         return jsonify({'msg': '저장 완료!'})
-#     else:
-#         return render_template('comments.html', keyword=keyword, comments=comments)
+@app.route('/user/signup/check_dup', methods=['POST'])
+def check_dup():
+    username_receive = request.form['username_give']
+    exists = bool(db.users.find_one({"username": username_receive}))
+    return jsonify({'result': 'success', 'exists': exists})
 
 
 if __name__ == '__main__':
